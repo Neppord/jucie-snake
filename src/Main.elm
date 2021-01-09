@@ -1,13 +1,14 @@
 module Main exposing (main)
 
 import Browser exposing (document)
-import Css exposing (animationDuration, animationName, ms, vmin)
+import Css exposing (animationDelay, animationDuration, animationName, ms, vmin)
 import Css.Animations exposing (keyframes, property)
 import Css.Global exposing (global)
 import Html.Styled exposing (toUnstyled)
 import List.Extra
+import String exposing (toInt)
 import Svg.Styled exposing (rect, svg)
-import Svg.Styled.Attributes exposing (class, fill, height, width, x, y)
+import Svg.Styled.Attributes exposing (class, css, fill, height, width, x, y)
 
 
 main =
@@ -67,7 +68,7 @@ model =
 view =
     { title = "Juice Snake"
     , body =
-        [ css
+        [ globalCss
         , model.snake
             |> toCords
             |> List.map snakeBody
@@ -77,7 +78,7 @@ view =
     }
 
 
-css =
+globalCss =
     global
         [ Css.Global.class "snake-body"
             [ animationName <|
@@ -98,6 +99,7 @@ css =
         ]
 
 
+snakeBody : Point -> Svg.Styled.Svg msg
 snakeBody ( xPos, yPos ) =
     rect
         [ width "25"
@@ -106,5 +108,7 @@ snakeBody ( xPos, yPos ) =
         , y <| String.fromFloat <| toFloat yPos * 25
         , fill "rgb(0, 200, 0)"
         , class "snake-body"
+        , css
+            [ animationDelay <| ms <| toFloat xPos * 20 ]
         ]
         []
