@@ -1,12 +1,13 @@
 module Main exposing (main)
 
 import Browser exposing (document)
+import Browser.Events exposing (onKeyPress)
 import Css exposing (animationDelay, animationDuration, animationName, ms, vmin)
 import Css.Animations exposing (keyframes, property)
 import Css.Global exposing (global)
 import Html.Styled exposing (toUnstyled)
+import Json.Decode exposing (succeed)
 import List.Extra
-import String exposing (toInt)
 import Svg.Styled exposing (rect, svg)
 import Svg.Styled.Attributes exposing (class, css, fill, height, width, x, y)
 import Time exposing (every)
@@ -21,6 +22,7 @@ main =
             [ Tick
                 |> always
                 |> every 1000
+            , onKeyPress <| succeed (Turn Down)
             ]
                 |> Sub.batch
                 |> always
@@ -34,6 +36,9 @@ update msg model =
             model
                 |> grow
                 |> shrink
+
+        Turn _ ->
+            model
     , Cmd.none
     )
 
@@ -86,6 +91,7 @@ flip direction =
 
 type Msg
     = Tick
+    | Turn Direction
 
 
 type alias Model =
