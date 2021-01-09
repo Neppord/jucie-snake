@@ -1,12 +1,12 @@
 module Main exposing (main)
 
 import Browser exposing (document)
-import Browser.Events exposing (onKeyPress)
+import Browser.Events exposing (onKeyDown, onKeyPress)
 import Css exposing (animationDelay, animationDuration, animationName, ms, vmin)
 import Css.Animations exposing (keyframes, property)
 import Css.Global exposing (global)
 import Html.Styled exposing (toUnstyled)
-import Json.Decode exposing (succeed)
+import Json.Decode exposing (field, string, succeed)
 import List.Extra
 import Svg.Styled exposing (rect, svg)
 import Svg.Styled.Attributes exposing (class, css, fill, height, width, x, y)
@@ -22,7 +22,26 @@ main =
             [ Tick
                 |> always
                 |> every 1000
-            , onKeyPress <| succeed (Turn Down)
+            , field "key" string
+                |> Json.Decode.map
+                    (\key ->
+                        case key of
+                            "ArrowUp" ->
+                                Turn Up
+
+                            "ArrowDown" ->
+                                Turn Down
+
+                            "ArrowLeft" ->
+                                Turn Left
+
+                            "ArrowRight" ->
+                                Turn Right
+
+                            _ ->
+                                Turn Down
+                    )
+                |> onKeyDown
             ]
                 |> Sub.batch
                 |> always
