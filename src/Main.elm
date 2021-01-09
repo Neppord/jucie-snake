@@ -23,29 +23,30 @@ main =
                 |> always
                 |> every 1000
             , field "key" string
-                |> Json.Decode.map
-                    (\key ->
-                        case key of
-                            "ArrowUp" ->
-                                Turn Up
-
-                            "ArrowDown" ->
-                                Turn Down
-
-                            "ArrowLeft" ->
-                                Turn Left
-
-                            "ArrowRight" ->
-                                Turn Right
-
-                            _ ->
-                                Turn Down
-                    )
+                |> Json.Decode.map (keyToDirection >> Turn)
                 |> onKeyDown
             ]
                 |> Sub.batch
                 |> always
         }
+
+
+keyToDirection key =
+    case key of
+        "ArrowUp" ->
+            Up
+
+        "ArrowDown" ->
+            Down
+
+        "ArrowLeft" ->
+            Left
+
+        "ArrowRight" ->
+            Right
+
+        _ ->
+            Down
 
 
 update : Msg -> Model -> ( Model, Cmd msg )
