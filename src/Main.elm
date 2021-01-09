@@ -187,8 +187,10 @@ globalCss =
                         ]
                       )
                     ]
-            , animationDuration <| ms 100
-            , Css.property "animation-timing-function" "ease-out"
+            , animationDuration <| ms 500
+            , Css.property
+                "animation-timing-function"
+                "cubic-bezier(.35,.9,.94,1.19)"
             ]
         , Css.Global.svg
             [ Css.width <| vmin 100
