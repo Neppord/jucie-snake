@@ -18,9 +18,11 @@ main =
         , view = view
         , update = update
         , subscriptions =
-            Tick
+            [ Tick
                 |> always
                 |> every 1000
+            ]
+                |> Sub.batch
                 |> always
         }
 
