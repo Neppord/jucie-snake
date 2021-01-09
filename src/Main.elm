@@ -37,10 +37,16 @@ update msg model =
                 |> grow
                 |> shrink
 
-        Turn _ ->
-            model
+        Turn direction ->
+            turn direction model
     , Cmd.none
     )
+
+
+turn direction model =
+    { model
+        | direction = direction
+    }
 
 
 grow model =
