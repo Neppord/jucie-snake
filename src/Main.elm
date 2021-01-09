@@ -5,11 +5,13 @@ import Browser.Events exposing (onKeyDown)
 import Css exposing (animationDelay, animationDuration, animationName, ms, vmin)
 import Css.Animations exposing (keyframes, property)
 import Css.Global exposing (global)
+import Css.Transitions exposing (transition)
 import Html.Styled exposing (toUnstyled)
 import Json.Decode exposing (field, string)
 import List.Extra
 import Svg.Styled exposing (rect, svg)
 import Svg.Styled.Attributes exposing (class, css, fill, height, width, x, y)
+import Svg.Styled.Keyed exposing (node)
 import Time exposing (every)
 
 
@@ -188,6 +190,7 @@ globalCss =
                       )
                     ]
             , animationDuration <| ms 500
+            , Css.property "transition" "x 0.1s , y 0.1s"
             , Css.property
                 "animation-timing-function"
                 "cubic-bezier(.35,.9,.94,1.19)"
@@ -204,11 +207,12 @@ snakeBody ( xPos, yPos ) =
     rect
         [ width "25"
         , height "25"
-        , x <| String.fromFloat <| toFloat xPos * 25
-        , y <| String.fromFloat <| toFloat yPos * 25
         , fill "rgb(0, 200, 0)"
         , class "snake-body"
         , css
-            [ animationDelay <| ms <| toFloat xPos * 20 ]
+            [ animationDelay <| ms <| toFloat xPos * 20
+            , Css.property "x" <| String.fromFloat <| toFloat xPos * 25
+            , Css.property "y" <| String.fromFloat <| toFloat yPos * 25
+            ]
         ]
         []
