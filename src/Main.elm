@@ -9,15 +9,87 @@ import List.Extra
 import String exposing (toInt)
 import Svg.Styled exposing (rect, svg)
 import Svg.Styled.Attributes exposing (class, css, fill, height, width, x, y)
+import Time exposing (every)
 
 
 main =
     document
-        { init = \() -> ( (), Cmd.none )
-        , view = always view
-        , update = \_ m -> ( m, Cmd.none )
-        , subscriptions = always Sub.none
+        { init = init
+        , view = view
+        , update = update
+        , subscriptions =
+            Tick
+                |> always
+                |> every 1000
+                |> always
         }
+
+
+update : Msg -> Model -> ( Model, Cmd msg )
+update msg model =
+    ( case msg of
+        Tick ->
+            model
+                |> grow
+                |> shrink
+    , Cmd.none
+    )
+
+
+grow model =
+    { model
+        | snake =
+            { head = move model.direction model.snake.head
+            , tail = flip model.direction :: model.snake.tail
+            }
+    }
+
+
+shrink model =
+    { model
+        | snake =
+            { head = model.snake.head
+            , tail = List.take (List.length model.snake.tail - 1) model.snake.tail
+            }
+    }
+
+
+init : () -> ( Model, Cmd msg )
+init () =
+    ( { snake =
+            { head = ( 5, 5 )
+            , tail = [ Right, Right, Right, Right, Down, Down, Left ]
+            }
+      , direction = Left
+      }
+    , Cmd.none
+    )
+
+
+flip : Direction -> Direction
+flip direction =
+    case direction of
+        Up ->
+            Down
+
+        Down ->
+            Up
+
+        Left ->
+            Right
+
+        Right ->
+            Left
+
+
+type Msg
+    = Tick
+
+
+type alias Model =
+    { snake : Snake
+    , direction : Direction
+    }
 
 
 type alias Point =
@@ -57,15 +129,7 @@ toCords snake =
     snake.head :: List.Extra.scanl move snake.head snake.tail
 
 
-model =
-    { snake =
-        { head = ( 5, 5 )
-        , tail = [ Right, Right, Right, Right, Down, Down, Left ]
-        }
-    }
-
-
-view =
+view model =
     { title = "Juice Snake"
     , body =
         [ globalCss
