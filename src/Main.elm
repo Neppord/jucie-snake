@@ -1,6 +1,8 @@
 module Main exposing (main)
 
+import Browser exposing (document)
 import Color
+import Css.Transitions exposing (transition)
 import TypedSvg exposing (rect, svg)
 import TypedSvg.Attributes exposing (fill)
 import TypedSvg.Attributes.InPx
@@ -14,7 +16,18 @@ import TypedSvg.Types exposing (Paint(..))
 
 
 main =
-    svg [] [ snakeBody 0 0 ]
+    document
+        { init = \() -> ( (), Cmd.none )
+        , view = always view
+        , update = \_ model -> ( model, Cmd.none )
+        , subscriptions = always Sub.none
+        }
+
+
+view =
+    { title = "Juice Snake"
+    , body = [ svg [] [ snakeBody 0 0 ] ]
+    }
 
 
 snakeBody xPos yPos =
