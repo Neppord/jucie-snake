@@ -1,12 +1,12 @@
 module Main exposing (main)
 
 import Browser exposing (document)
-import Browser.Events exposing (onKeyDown, onKeyPress)
+import Browser.Events exposing (onKeyDown)
 import Css exposing (animationDelay, animationDuration, animationName, ms, vmin)
 import Css.Animations exposing (keyframes, property)
 import Css.Global exposing (global)
 import Html.Styled exposing (toUnstyled)
-import Json.Decode exposing (field, string, succeed)
+import Json.Decode exposing (field, string)
 import List.Extra
 import Svg.Styled exposing (rect, svg)
 import Svg.Styled.Attributes exposing (class, css, fill, height, width, x, y)
