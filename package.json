@@ -3,7 +3,8 @@
   "version": "0.0.0",
   "description": "Snake in elm, focusing on nice effects",
   "scripts": {
-    "elm": "elm"
+    "elm": "elm",
+    "elm-test": "elm-test"
   },
   "author": "Samuel Ytterbrink",
   "license": "MIT",
