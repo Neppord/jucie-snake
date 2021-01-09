@@ -1,23 +1,13 @@
 module Main exposing (main)
 
 import Browser exposing (document)
-import Color
-import Css exposing (animationDuration, animationName, ms, sec, vh, vmin)
-import Css.Animations exposing (custom, keyframes, property)
+import Css exposing (animationDuration, animationName, ms, vmin)
+import Css.Animations exposing (keyframes, property)
 import Css.Global exposing (global)
-import Css.Transitions exposing (transition)
 import Html.Styled exposing (toUnstyled)
 import List.Extra
-import TypedSvg exposing (rect, svg)
-import TypedSvg.Attributes exposing (class, fill)
-import TypedSvg.Attributes.InPx
-    exposing
-        ( height
-        , width
-        , x
-        , y
-        )
-import TypedSvg.Types exposing (Paint(..))
+import Svg.Styled exposing (rect, svg)
+import Svg.Styled.Attributes exposing (class, fill, height, width, x, y)
 
 
 main =
@@ -77,12 +67,13 @@ model =
 view =
     { title = "Juice Snake"
     , body =
-        [ toUnstyled css
+        [ css
         , model.snake
             |> toCords
             |> List.map snakeBody
             |> svg []
         ]
+            |> List.map toUnstyled
     }
 
 
@@ -109,11 +100,11 @@ css =
 
 snakeBody ( xPos, yPos ) =
     rect
-        [ width 25
-        , height 25
-        , x <| toFloat xPos * 25
-        , y <| toFloat yPos * 25
-        , fill <| Paint Color.green
-        , class [ "snake-body" ]
+        [ width "25"
+        , height "25"
+        , x <| String.fromFloat <| toFloat xPos * 25
+        , y <| String.fromFloat <| toFloat yPos * 25
+        , fill "rgb(0, 200, 0)"
+        , class "snake-body"
         ]
         []
