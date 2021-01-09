@@ -21,7 +21,7 @@ main =
         , subscriptions =
             [ Tick
                 |> always
-                |> every 1000
+                |> every 100
             , field "key" string
                 |> Json.Decode.map (keyToDirection >> Turn)
                 |> onKeyDown
@@ -187,7 +187,7 @@ globalCss =
                         ]
                       )
                     ]
-            , animationDuration <| ms 500
+            , animationDuration <| ms 100
             , Css.property "animation-timing-function" "ease-out"
             ]
         , Css.Global.svg
